@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Conduit</string>
+    <string name="reload">Reload page\n</string>
+    <string name="show_favorites">My Feed</string>
+    <string name="title_placeholder">Title placeholder</string>
+    <string name="article_placeholder">Article placeholder</string>
 </resources>
