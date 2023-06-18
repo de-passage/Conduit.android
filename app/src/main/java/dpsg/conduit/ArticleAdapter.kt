@@ -5,15 +5,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import org.json.JSONObject
+import dpsg.conduit.api.models.Article
 
-class ArticleAdapter(private var articles: List<JSONObject>) : RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
+class ArticleAdapter(private var articles: List<Article>) : RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
     class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.title_text_view)
         val summary: TextView = itemView.findViewById(R.id.article_excerpt_text_view)
     }
 
-    fun setArticles(articles: List<JSONObject>) {
+    fun setArticles(articles: List<Article>) {
         this.articles = articles;
         this.notifyItemRangeChanged(0, articles.size)
     }
@@ -30,7 +30,7 @@ class ArticleAdapter(private var articles: List<JSONObject>) : RecyclerView.Adap
 
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val article = articles[position]
-        holder.title.text = article.getString("title")
-        holder.summary.text = article.getString("description")
+        holder.title.text = article.title
+        holder.summary.text = article.description
     }
 }
