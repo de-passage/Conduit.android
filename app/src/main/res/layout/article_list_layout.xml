@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="fill_horizontal"
-        android:paddingLeft="4dp"
+        android:paddingEnd="4dp"
         android:text="@string/title_placeholder" />
 
     <LinearLayout

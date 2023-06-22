@@ -1,5 +1,6 @@
 package dpsg.conduit
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,17 @@ class ArticleAdapter(private var articles: List<Article>) : RecyclerView.Adapter
         val summary: TextView = itemView.findViewById(R.id.article_excerpt_text_view)
         val authorAvatar: ImageView = itemView.findViewById(R.id.article_author_pic)
         val author: TextView = itemView.findViewById(R.id.article_author_text_view)
+        var slug: String = ""
+        init {
+            itemView.setOnClickListener { view ->
+                val context = view.context
+                val intent = Intent(context, ShowArticle::class.java)
+                intent.putExtra(ShowArticle.EXTRA_ARTICLE_TITLE, title.text)
+                intent.putExtra(ShowArticle.EXTRA_ARTICLE_DESCRIPTION, summary.text)
+                intent.putExtra(ShowArticle.EXTRA_ARTICLE_SLUG, slug)
+                context.startActivity(intent)
+            }
+        }
     }
 
     fun setArticles(articles: List<Article>) {
@@ -41,5 +53,6 @@ class ArticleAdapter(private var articles: List<Article>) : RecyclerView.Adapter
             .load(article.author.image)
             .into(holder.authorAvatar)
         holder.author.text = article.author.username
+        holder.slug = article.slug
     }
 }
