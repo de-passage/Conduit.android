@@ -4,4 +4,6 @@
     <string name="show_favorites">My Feed</string>
     <string name="title_placeholder">Title placeholder</string>
     <string name="article_placeholder">Article placeholder</string>
+    <string name="author_avatar">Author avatar</string>
+    <string name="author_placeholder">Author</string>
 </resources>
