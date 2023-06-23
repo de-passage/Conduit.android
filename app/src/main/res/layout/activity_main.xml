@@ -6,23 +6,28 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <include
         android:id="@+id/toolbar"
-        android:layout_width="0dp"
+        layout="@layout/toolbar_layout"
+        />
+    <ProgressBar
+        android:id="@+id/progress_circular"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ConduitTheme.Toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/app_name"
-        app:titleMarginStart="1sp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/article_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="1dp"
+        android:paddingHorizontal="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

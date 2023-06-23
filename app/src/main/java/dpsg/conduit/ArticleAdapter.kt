@@ -1,15 +1,20 @@
 package dpsg.conduit
 
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dpsg.conduit.api.models.Article
 import org.w3c.dom.Text
+import java.time.DateTimeException
+import java.time.format.DateTimeFormatter
 
 class ArticleAdapter(private var articles: List<Article>) : RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder>() {
     class ArticleViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -17,22 +22,27 @@ class ArticleAdapter(private var articles: List<Article>) : RecyclerView.Adapter
         val summary: TextView = itemView.findViewById(R.id.article_excerpt_text_view)
         val authorAvatar: ImageView = itemView.findViewById(R.id.article_author_pic)
         val author: TextView = itemView.findViewById(R.id.article_author_text_view)
-        var slug: String = ""
+        var slug: String? = null
         init {
             itemView.setOnClickListener { view ->
-                val context = view.context
-                val intent = Intent(context, ShowArticle::class.java)
-                intent.putExtra(ShowArticle.EXTRA_ARTICLE_TITLE, title.text)
-                intent.putExtra(ShowArticle.EXTRA_ARTICLE_DESCRIPTION, summary.text)
-                intent.putExtra(ShowArticle.EXTRA_ARTICLE_SLUG, slug)
-                context.startActivity(intent)
+                if (slug == null) {
+                    Toast.makeText(view.context, "This article doesn't have content", Toast.LENGTH_SHORT).show()
+                } else {
+                    val context = view.context
+                    val intent = Intent(context, ShowArticle::class.java)
+                    intent.putExtra(ShowArticle.EXTRA_ARTICLE_TITLE, title.text)
+                    intent.putExtra(ShowArticle.EXTRA_ARTICLE_DESCRIPTION, summary.text)
+                    intent.putExtra(ShowArticle.EXTRA_ARTICLE_SLUG, slug)
+                    context.startActivity(intent)
+                }
             }
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setArticles(articles: List<Article>) {
         this.articles = articles;
-        this.notifyItemRangeChanged(0, articles.size)
+        this.notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArticleViewHolder {
@@ -45,12 +55,14 @@ class ArticleAdapter(private var articles: List<Article>) : RecyclerView.Adapter
         return articles.size
     }
 
+
     override fun onBindViewHolder(holder: ArticleViewHolder, position: Int) {
         val article = articles[position]
         holder.title.text = article.title
         holder.summary.text = article.description
         Glide.with(holder.itemView.context)
             .load(article.author.image)
+            .circleCrop()
             .into(holder.authorAvatar)
         holder.author.text = article.author.username
         holder.slug = article.slug
