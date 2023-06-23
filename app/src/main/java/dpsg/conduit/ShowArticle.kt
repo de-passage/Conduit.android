@@ -1,5 +1,6 @@
 package dpsg.conduit
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,8 @@ import dpsg.conduit.api.apis.ArticlesApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.time.DateTimeException
+import java.time.format.DateTimeFormatter
 
 class ShowArticle : AppCompatActivity() {
     companion object {
@@ -21,6 +24,11 @@ class ShowArticle : AppCompatActivity() {
         const val EXTRA_ARTICLE_TITLE = "article_title"
         const val EXTRA_ARTICLE_DESCRIPTION = "article_description"
     }
+
+    private val date: TextView by lazy {
+      findViewById(R.id.article_date_text_view)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val apiAdapter = ArticlesApi()
         super.onCreate(savedInstanceState)
@@ -53,6 +61,19 @@ class ShowArticle : AppCompatActivity() {
                     .circleCrop()
                     .into(findViewById(R.id.article_author_pic));
                 findViewById<TextView>(R.id.article_author).text = response.article.author.username
+                date.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                    val date = response.article.createdAt
+                    try {
+                        val parsedDate = formatter.parse(date.toString())
+                        val formatter2 = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+                        formatter2.format(parsedDate).toString()
+                    } catch (e: DateTimeException) {
+                        date.toString()
+                    }
+                } else {
+                    response.article.createdAt.toString()
+                }
             }
         }
     }

@@ -22,6 +22,7 @@ class ArticleAdapter(private var articles: List<Article>) : RecyclerView.Adapter
         val summary: TextView = itemView.findViewById(R.id.article_excerpt_text_view)
         val authorAvatar: ImageView = itemView.findViewById(R.id.article_author_pic)
         val author: TextView = itemView.findViewById(R.id.article_author_text_view)
+        val date: TextView = itemView.findViewById(R.id.article_date_text_view)
         var slug: String? = null
         init {
             itemView.setOnClickListener { view ->
@@ -66,5 +67,18 @@ class ArticleAdapter(private var articles: List<Article>) : RecyclerView.Adapter
             .into(holder.authorAvatar)
         holder.author.text = article.author.username
         holder.slug = article.slug
+        holder.date.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+            val date = article.createdAt
+            try {
+                val parsedDate = formatter.parse(date.toString())
+                val formatter2 = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+                formatter2.format(parsedDate).toString()
+            } catch (e: DateTimeException) {
+                date.toString()
+            }
+        } else {
+            article.createdAt.toString()
+        }
     }
 }

@@ -13,22 +13,25 @@
         android:layout_height="wrap_content"
         android:gravity="fill_horizontal"
         android:paddingEnd="4dp"
+        android:paddingStart="0dp"
         android:text="@string/title_placeholder" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:baselineAligned="false"
         android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <ImageView
-                android:contentDescription="@string/author_avatar"
                 android:id="@+id/article_author_pic"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
+                android:contentDescription="@string/author_avatar"
                 android:paddingHorizontal="4dp"
                 android:paddingTop="4dp"
                 android:paddingBottom="1dp"
@@ -36,20 +39,32 @@
                 android:src="@drawable/baseline_refresh_24" />
 
             <TextView
+                android:id="@+id/article_author_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/author_placeholder"
-                android:textColor="@android:color/black"
                 android:gravity="center_horizontal"
-                android:id="@+id/article_author_text_view" />
+                android:text="@string/author_placeholder"
+                android:textColor="@android:color/black" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/article_excerpt_text_view"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/article_placeholder" />
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/article_excerpt_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/article_placeholder" />
+
+            <TextView
+                android:id="@+id/article_date_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
