@@ -11,6 +11,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.NavUtils
 import com.bumptech.glide.Glide
 import dpsg.conduit.api.apis.ArticlesApi
+import dpsg.conduit.databinding.ToolbarLayoutBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -88,5 +89,20 @@ class ShowArticle : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val avatarUrl = getSharedPreferences("dpsg.conduit", MODE_PRIVATE).getString("dpsg.conduit.avatar", null)
+        Log.d("ShowArticle", "Avatar URL: $avatarUrl")
+        if (avatarUrl != null) {
+            val avatar = findViewById<Toolbar>(R.id.toolbar).findViewById<android.widget.ImageView>(R.id.user_avatar)
+            avatar.visibility = android.view.View.VISIBLE
+            Glide.with(this)
+                .load(avatarUrl)
+                .circleCrop()
+                .into(avatar)
+        }
     }
 }

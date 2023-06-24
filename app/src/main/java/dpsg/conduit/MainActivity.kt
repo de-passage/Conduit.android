@@ -2,13 +2,17 @@ package dpsg.conduit
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.widget.Toolbar
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import dpsg.conduit.api.apis.ArticlesApi
+import dpsg.conduit.databinding.ToolbarLayoutBinding
+import dpsg.conduit.ui.login.LoginActivity
 
 const val URL = "https://api.realworld.io/api"
 fun getURL(path: String): String {
@@ -50,6 +54,11 @@ class MainActivity : AppCompatActivity() {
                 loadArticles()
                 return true
             }
+            R.id.login -> {
+               val intent = android.content.Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -65,6 +74,21 @@ class MainActivity : AppCompatActivity() {
                 progressBar.visibility = android.view.View.GONE
                 adapter.setArticles(articles.articles)
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val avatarUrl = getSharedPreferences("dpsg.conduit", MODE_PRIVATE).getString("dpsg.conduit.avatar", null)
+        Log.d("MainActivity", "Avatar URL: $avatarUrl")
+        if (avatarUrl != null) {
+            val avatar = findViewById<Toolbar>(R.id.toolbar).findViewById<android.widget.ImageView>(R.id.user_avatar)
+            avatar.visibility = android.view.View.VISIBLE
+            Glide.with(this)
+                .load(avatarUrl)
+                .circleCrop()
+                .into(avatar)
         }
     }
 }

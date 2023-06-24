@@ -6,4 +6,19 @@
     <string name="article_placeholder">Article placeholder</string>
     <string name="author_avatar">Author avatar</string>
     <string name="author_placeholder">Author</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_up">Register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="change_to_sign_in">Already have an account? Sign in!</string>
+    <string name="change_to_sign_up">Don\'t have an account yet? Sign up!</string>
+    <string name="prompt_username">Username</string>
+    <string name="invalid_email">Email is not valid</string>
+    <string name="user_avatar">User Avatar</string>
 </resources>
