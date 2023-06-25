@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope
@@ -68,11 +69,19 @@ class MainActivity : AppCompatActivity() {
         adapter.setArticles(emptyList())
 
         CoroutineScope(Dispatchers.IO).launch {
-            var articleApi = ArticlesApi()
-            var articles = articleApi.getArticles()
-            CoroutineScope(Dispatchers.Main).launch {
-                progressBar.visibility = android.view.View.GONE
-                adapter.setArticles(articles.articles)
+            try {
+                var articleApi = ArticlesApi()
+                var articles = articleApi.getArticles()
+                CoroutineScope(Dispatchers.Main).launch {
+                    progressBar.visibility = android.view.View.GONE
+                    adapter.setArticles(articles.articles)
+                }
+            } catch (e: Exception) {
+                Log.e("MainActivity", "Error while loading articles", e)
+                CoroutineScope(Dispatchers.Main).launch {
+                    progressBar.visibility = android.view.View.GONE
+                    Toast.makeText(this@MainActivity, "Error while loading articles", android.widget.Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

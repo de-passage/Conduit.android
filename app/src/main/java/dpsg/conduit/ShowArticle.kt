@@ -53,27 +53,34 @@ class ShowArticle : AppCompatActivity() {
         articleDescriptionTextView.text = articleDescription
 
         CoroutineScope(Dispatchers.IO).launch {
-            val response = apiAdapter.getArticle(articleSlug);
-            CoroutineScope(Dispatchers.Main).launch {
-                articleTitleTextView.text = response.article.title
-                articleDescriptionTextView.text = response.article.body
-                Glide.with(this@ShowArticle)
-                    .load(response.article.author.image)
-                    .circleCrop()
-                    .into(findViewById(R.id.article_author_pic));
-                findViewById<TextView>(R.id.article_author).text = response.article.author.username
-                date.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-                    val date = response.article.createdAt
-                    try {
-                        val parsedDate = formatter.parse(date.toString())
-                        val formatter2 = DateTimeFormatter.ofPattern("dd.MM.yyyy")
-                        formatter2.format(parsedDate).toString()
-                    } catch (e: DateTimeException) {
-                        date.toString()
+            try {
+                val response = apiAdapter.getArticle(articleSlug);
+                CoroutineScope(Dispatchers.Main).launch {
+                    articleTitleTextView.text = response.article.title
+                    articleDescriptionTextView.text = response.article.body
+                    Glide.with(this@ShowArticle)
+                        .load(response.article.author.image)
+                        .circleCrop()
+                        .into(findViewById(R.id.article_author_pic));
+                    findViewById<TextView>(R.id.article_author).text = response.article.author.username
+                    date.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                        val date = response.article.createdAt
+                        try {
+                            val parsedDate = formatter.parse(date.toString())
+                            val formatter2 = DateTimeFormatter.ofPattern("dd.MM.yyyy")
+                            formatter2.format(parsedDate).toString()
+                        } catch (e: DateTimeException) {
+                            date.toString()
+                        }
+                    } else {
+                        response.article.createdAt.toString()
                     }
-                } else {
-                    response.article.createdAt.toString()
+                }
+            } catch (e: Exception) {
+                Log.e("ShowArticle", "Error while fetching article: $e")
+                CoroutineScope(Dispatchers.Main).launch {
+                    Toast.makeText(this@ShowArticle, "Error while fetching article: $e", Toast.LENGTH_SHORT).show()
                 }
             }
         }
