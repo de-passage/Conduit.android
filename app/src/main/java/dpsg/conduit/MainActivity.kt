@@ -60,6 +60,11 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 return true
             }
+            R.id.newArticle -> {
+                val intent = android.content.Intent(this, NewArticle::class.java)
+                startActivity(intent)
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }

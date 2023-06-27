@@ -12,6 +12,7 @@ import androidx.core.app.NavUtils
 import com.bumptech.glide.Glide
 import dpsg.conduit.api.apis.ArticlesApi
 import dpsg.conduit.databinding.ToolbarLayoutBinding
+import io.noties.markwon.Markwon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -55,14 +56,22 @@ class ShowArticle : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val response = apiAdapter.getArticle(articleSlug);
+
                 CoroutineScope(Dispatchers.Main).launch {
                     articleTitleTextView.text = response.article.title
+
                     articleDescriptionTextView.text = response.article.body
+                    val markwon = Markwon.builder(applicationContext).build()
+                    markwon.setMarkdown(articleDescriptionTextView, response.article.body)
+
+
                     Glide.with(this@ShowArticle)
                         .load(response.article.author.image)
                         .circleCrop()
                         .into(findViewById(R.id.article_author_pic));
+
                     findViewById<TextView>(R.id.article_author).text = response.article.author.username
+
                     date.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                         val date = response.article.createdAt

@@ -13,9 +13,20 @@
         app:showAsAction="ifRoom"
         android:icon="@drawable/baseline_login_24"
         />
+    <item android:id="@+id/newArticle"
+        android:title="@string/action_new_article"
+        android:orderInCategory="200"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/baseline_add_24"
+        />
     <item android:id="@+id/showFavorites"
         android:title="@string/show_favorites"
         android:orderInCategory="200"
         android:icon="@drawable/baseline_favorite_24"
+        app:showAsAction="ifRoom" />
+    <item android:id="@+id/settings"
+        android:title="@string/settings"
+        android:orderInCategory="200"
+        android:icon="@drawable/baseline_settings_24"
         app:showAsAction="ifRoom" />
 </menu>
